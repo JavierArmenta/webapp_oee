@@ -1,0 +1,41 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+
+        <li class="nav-item nav-item-dropdown-lg dropdown dropdown-user h-100">
+            <a href="#" class="navbar-nav-link navbar-nav-link-toggler dropdown-toggle d-inline-flex align-items-center h-100" data-toggle="dropdown">
+                <img src="~/global_assets/images/placeholders/placeholder.jpg" class="rounded-pill mr-lg-2" height="34" alt="">
+                <span class="d-none d-lg-inline-block">@User.Identity?.Name</span>
+            </a>
+
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">
+                    Administración
+                </a>
+                <div class="dropdown-divider"></div>
+                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+
+                    <button type="submit" class="dropdown-item">Logout</button>
+                </form>
+
+            </div>
+        </li>
+
+
+    }
+    else
+    {
+
+        <li class="nav-item h-100">
+            <a class="navbar-nav-link navbar-nav-link-toggler d-inline-flex align-items-center h-100" asp-area="Identity" asp-page="/Account/Login">
+                <span class="d-none d-lg-inline-block">Login</span>
+            </a>
+        </li>
+
+
+    }
+</ul>

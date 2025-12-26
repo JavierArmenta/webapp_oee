@@ -1,0 +1,76 @@
+﻿@using WebApp.Enums
+@model List<ManageUserRolesViewModel>
+@{
+    ViewData["Title"] = "Manage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="col-sm-12">
+    <div class="card marginBottomLess">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- Authentication card start -->
+                    <div class="signup-card card-block auth-body mr-auto ml-auto">
+
+                        <form method="post">
+
+                            <div class="row m-b-20">
+                                <div class="col-md-12">
+                                    <h3 class="text-center txt-primary">Modificar Roles de usuario</h3>
+                                    <h6 class="text-center txt-primary">Agregar modificar roles del usuario @ViewBag.UserName  </h6>
+
+                                </div>
+                            </div>
+                            <hr />
+                            <div asp-validation-summary="All" class="text-danger"></div>
+
+
+                            <div class="col">
+                                @for (int i = 0; i < Model.Count; i++)
+                                {
+                                    <div class="form-check m-1">
+                                        <input type="hidden" asp-for="@Model[i].RoleId" />
+                                        <input type="hidden" asp-for="@Model[i].RoleName" />
+                                        <input asp-for="@Model[i].Selected" class="form-check-input" />
+                                        <label class="form-check-label" asp-for="@Model[i].Selected">
+                                            @Model[i].RoleName
+                                        </label>
+                                    </div>
+                                }
+                                <div asp-validation-summary="All" class="text-danger"></div>
+
+                            </div>
+
+                            <input type="submit" value="Actualizar" class="btn btn-primary"
+                                   style="width:auto" />
+
+
+
+                            <a asp-controller="Admin" asp-action=""
+                               class="btn btn-primary" style="width:auto">Cancelar</a>
+
+                            <hr />
+                            <!---   -->
+
+
+
+                        </form>
+                        <!-- end of form -->
+                    </div>
+                    <!-- Authentication card end -->
+                </div>
+                <!-- end of col-sm-12 -->
+            </div>
+            <!-- end of row -->
+
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+
+
+
+
+}

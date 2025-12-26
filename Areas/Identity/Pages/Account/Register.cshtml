@@ -1,0 +1,89 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+
+<!-- Inner content -->
+<div class="content-inner">
+
+    <!-- Content area -->
+    <div class="content d-flex justify-content-center align-items-center">
+
+        <div class="col-sm-12">
+            <div class="card marginBottomLess">
+                <div class="card-body">
+                    <partial name="_StatusMessage" model="Model.StatusMessage" />
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <!-- Authentication card start -->
+                            <div class="signup-card card-block auth-body mr-auto ml-auto">
+
+                                <form class="md-float-material" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+
+                                    <div class="row m-b-20">
+                                        <div class="col-md-12">
+                                            <h3 class="text-center txt-primary">Registrar nuevo usuario.</h3>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div asp-validation-summary="All" class="text-danger"></div>
+
+                                    <div class="form-group">
+                                        <label asp-for="Input.UserName"></label>
+                                        <input asp-for="Input.UserName" class="form-control" />
+                                        <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label asp-for="Input.FirstName"></label>
+                                        <input asp-for="Input.FirstName" class="form-control" />
+                                        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Input.LastName"></label>
+                                        <input asp-for="Input.LastName" class="form-control" />
+                                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label asp-for="Input.Email"></label>
+                                        <input asp-for="Input.Email" class="form-control" />
+                                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                    </div>
+                                    <div class="row m-t-30">
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">Registrar</button>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <!---   -->
+
+
+
+                                </form>
+                                <!-- end of form -->
+                            </div>
+                            <!-- Authentication card end -->
+                        </div>
+                        <!-- end of col-sm-12 -->
+                    </div>
+                    <!-- end of row -->
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <!-- /content area -->
+
+
+
+
+</div>
+<!-- /inner content -->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

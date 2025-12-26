@@ -1,0 +1,71 @@
+﻿@{
+	if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout != null)
+	{
+		Layout = parentLayout.ToString();
+	}
+	else
+	{
+		Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+	}
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<body>
+
+	<!-- Inner content -->
+	<div class="content-inner">
+
+
+
+		<!-- Content area -->
+		<div class="content">
+
+
+			<!-- Basic datatable -->
+			<div class="card">
+
+				<div class="card-body">
+
+
+
+					<h1>Administra tu cuenta</h1>
+
+					<div>
+						<hr />
+						<div class="row">
+							<div class="col-md-3">
+								<partial name="_ManageNav" />
+							</div>
+							<div class="col-md-9">
+								@RenderBody()
+							</div>
+						</div>
+					</div>
+
+
+
+
+				</div>
+				<!-- /basic datatable -->
+
+
+			</div>
+
+		</div>
+		<!-- /inner content -->
+
+	</div>
+
+
+
+</body>
+</html>
+
+
+
+
+@section Scripts {
+	@RenderSection("Scripts", required: false)
+}

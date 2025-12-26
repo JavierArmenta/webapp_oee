@@ -1,0 +1,156 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Over Bake</title>
+
+    <!-- Global stylesheets -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+    <link href="~/global_assets/css/icons/icomoon/styles.min.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/css/all.min.css" rel="stylesheet" type="text/css">
+    <!-- /global stylesheets -->
+    <!-- Core JS files -->
+    <script src="~/global_assets/js/main/jquery.min.js"></script>
+    <script src="~/global_assets/js/main/bootstrap.bundle.min.js"></script>
+    <!-- /core JS files -->
+    <!-- Theme JS files -->
+    <script src="~/assets/js/app.js"></script>
+    <!-- /theme JS files -->
+
+</head>
+
+<body>
+
+    <!-- Main navbar -->
+    <div class="navbar navbar-expand-lg navbar-dark navbar-static">
+        <div class="d-flex flex-1 d-lg-none">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">
+                <i class="icon-paragraph-justify3"></i>
+            </button>
+            <button class="navbar-toggler sidebar-mobile-main-toggle" type="button">
+                <i class="icon-transmission"></i>
+            </button>
+        </div>
+
+        <div class="navbar-brand text-center text-lg-left">
+            <a href="/" class="d-inline-block">
+                <img src="~/global_assets/images/logo_light.png" class="d-none d-sm-block" alt="Logo">
+                <img src="~/global_assets/images/logo_icon_light.png" class="d-sm-none" alt="Logo">
+            </a>
+        </div>
+
+        <div class="collapse navbar-collapse order-2 order-lg-1" id="navbar-mobile">
+        </div>
+
+        <ul class="navbar-nav flex-row order-1 order-lg-2 flex-1 flex-lg-0 justify-content-end align-items-center">
+
+            <partial name="_LoginPartial" />
+
+
+
+        </ul>
+    </div>
+    <!-- /main navbar -->
+    <!-- Page content -->
+    <div class="page-content">
+
+        <!-- Main sidebar -->
+        <div class="sidebar sidebar-dark sidebar-main sidebar-expand-lg">
+
+            <!-- Sidebar content -->
+            <div class="sidebar-content">
+
+
+
+                <!-- Main navigation -->
+                <div class="sidebar-section">
+                    <ul class="nav nav-sidebar" data-nav-type="accordion">
+
+                        @if (SignInManager.IsSignedIn(User) && User.IsInRole("SuperAdmin"))
+                        {
+
+                        <li class="nav-item">
+                            <a href="~/Operadores/Index" class="nav-link"><i class="icon-fire"></i> <span>Operadores</span></a>
+
+                            
+                        </li>
+                        }
+
+                        <li class="nav-item nav-item-submenu">
+                            <a href="#" class="nav-link"><i class="icon-file-stats"></i> <span>Reportes</span></a>
+
+                            <ul class="nav nav-group-sub" data-submenu-title="Themes">
+                                <li class="nav-item"><a href="~/reportes/Ecoat" class="nav-link ">Reporte Eventos</a></li>
+
+                            </ul>
+                        </li>
+
+
+
+
+
+                        <li class="nav-item nav-item-submenu">
+                            <a href="#" class="nav-link"><i class="icon-fire"></i> <span>Hornos</span></a>
+
+                            <ul class="nav nav-group-sub" data-submenu-title="Themes">
+                                <li class="nav-item"><a href="~/Hornos/wet" class="nav-link ">3 Wet</a></li>
+
+                            </ul>
+                            <ul class="nav nav-group-sub" data-submenu-title="Themes">
+                                <li class="nav-item"><a href="~/Hornos/ecoat" class="nav-link ">E-coat</a></li>
+
+                            </ul>
+                            <ul class="nav nav-group-sub" data-submenu-title="Themes">
+                                <li class="nav-item"><a href="~/Hornos/horno2tonos" class="nav-link ">2 Tonos</a></li>
+
+                            </ul>
+
+                        </li>
+
+
+
+                        @if (SignInManager.IsSignedIn(User) && User.IsInRole("SuperAdmin"))
+                        {
+                            <li class="nav-item nav-item-submenu">
+                                <a href="#" class="nav-link"><i class="icon-user"></i> <span>Usuarios</span></a>
+
+                                <ul class="nav nav-group-sub" data-submenu-title="Themes">
+                                    <li class="nav-item"><a href="~/Identity/Account/Register" class="nav-link ">Registrar usuario</a></li>
+                                    <li class="nav-item"><a href="~/Admin" class="nav-link ">Modificar usuario</a></li>
+
+                                </ul>
+                            </li>
+
+                        }
+
+                    </ul>
+                </div>
+                <!-- /main navigation -->
+
+            </div>
+            <!-- /sidebar content -->
+
+        </div>
+        <!-- /main sidebar -->
+        <!-- Main content -->
+        <div class="content-wrapper">
+
+
+            @RenderBody()
+
+        </div>
+        <!-- /inner content -->
+
+
+
+    </div>
+    <!-- /page content -->
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
