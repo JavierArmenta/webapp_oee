@@ -5,13 +5,18 @@
 }
 
 <div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3 mb-0">
-            <i class="bi bi-hdd-stack me-2"></i>Estaciones de Trabajo
-        </h1>
-        <a asp-action="CreateEstacion" class="btn btn-primary">
-            <i class="bi bi-plus-circle me-1"></i>Nueva Estación
-        </a>
+
+    <div class="card shadow-sm mt-3">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="h3 mb-0">
+                    <i class="bi bi-hdd-stack me-2"></i>Estaciones de Trabajo
+                </h1>
+                <a asp-action="CreateEstacion" class="btn btn-primary">
+                    <i class="bi bi-plus-circle me-1"></i>Nueva Estación
+                </a>
+            </div>
+        </div>
     </div>
 
     @if (TempData["Success"] != null)
@@ -46,48 +51,52 @@
                 <div class="table-responsive">
                     <table class="table table-hover align-middle">
                         <thead class="table-light">
-                            <tr>
-                                <th>Código</th>
-                                <th>Nombre</th>
-                                <th>Línea</th>
-                                <th>Área</th>
-                                <th class="text-center">Máquinas</th>
-                                <th class="text-center">Estado</th>
-                                <th class="text-end">Acciones</th>
-                            </tr>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Línea</th>
+                            <th>Área</th>
+                            <th class="text-center">Máquinas</th>
+                            <th class="text-center">Estado</th>
+                            <th class="text-end">Acciones</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model)
-                            {
-                                <tr>
-                                    <td><code>@item.Codigo</code></td>
-                                    <td><strong>@item.Nombre</strong></td>
-                                    <td>
-                                        <a asp-action="LineaDetails" asp-route-id="@item.LineaId">
-                                            @item.Linea.Nombre
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a asp-action="AreaDetails" asp-route-id="@item.Linea.AreaId">
-                                            @item.Linea.Area.Nombre
-                                        </a>
-                                    </td>
-                                    <td class="text-center">
-                                        <span class="badge bg-info">@item.Maquinas.Count</span>
-                                    </td>
-                                    <td class="text-center">
-                                        @if (item.Activo)
-                                        {
-                                            <span class="badge bg-success">Activo</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="badge bg-secondary">Inactivo</span>
-                                        }
-                                    </td>
-                                    <td class="text-end">
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <code>@item.Codigo</code>
+                                </td>
+                                <td>
+                                    <strong>@item.Nombre</strong>
+                                </td>
+                                <td>
+                                    <a asp-action="LineaDetails" asp-route-id="@item.LineaId">
+                                        @item.Linea.Nombre
+                                    </a>
+                                </td>
+                                <td>
+                                    <a asp-action="AreaDetails" asp-route-id="@item.Linea.AreaId">
+                                        @item.Linea.Area.Nombre
+                                    </a>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-info">@item.Maquinas.Count</span>
+                                </td>
+                                <td class="text-center">
+                                    @if (item.Activo)
+                                    {
+                                        <span class="badge bg-success">Activo</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Inactivo</span>
+                                    }
+                                </td>
+                                <td class="text-end">
 
-                                        <div class="btn-group" role="group">
+                                    <div class="btn-group" role="group">
                                         <a asp-action="EstacionDetails" asp-route-id="@item.Id" class="btn btn-sm btn-info">
                                             <i class="bi bi-eye"></i> Ver
                                         </a>
@@ -98,11 +107,11 @@
                                             <i class="bi bi-trash"></i> Eliminar
                                         </a>
                                     </div>
-                                    
 
-                                    </td>
-                                </tr>
-                            }
+
+                                </td>
+                            </tr>
+                        }
                         </tbody>
                     </table>
                 </div>

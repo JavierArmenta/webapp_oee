@@ -5,13 +5,18 @@
 }
 
 <div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3 mb-0">
-            <i class="bi bi-gear me-2"></i>Máquinas
-        </h1>
-        <a asp-action="CreateMaquina" class="btn btn-primary">
-            <i class="bi bi-plus-circle me-1"></i>Nueva Máquina
-        </a>
+
+    <div class="card shadow-sm mt-3">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="h3 mb-0">
+                    <i class="bi bi-gear me-2"></i>Máquinas
+                </h1>
+                <a asp-action="CreateMaquina" class="btn btn-primary">
+                    <i class="bi bi-plus-circle me-1"></i>Nueva Máquina
+                </a>
+            </div>
+        </div>
     </div>
 
     @if (TempData["Success"] != null)
@@ -46,47 +51,51 @@
                 <div class="table-responsive">
                     <table class="table table-hover align-middle">
                         <thead class="table-light">
-                            <tr>
-                                <th>Código</th>
-                                <th>Nombre</th>
-                                <th>Modelo</th>
-                                <th>Estación</th>
-                                <th>Línea / Área</th>
-                                <th class="text-center">Estado</th>
-                                <th class="text-end">Acciones</th>
-                            </tr>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Modelo</th>
+                            <th>Estación</th>
+                            <th>Línea / Área</th>
+                            <th class="text-center">Estado</th>
+                            <th class="text-end">Acciones</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model)
-                            {
-                                <tr>
-                                    <td><code>@item.Codigo</code></td>
-                                    <td><strong>@item.Nombre</strong></td>
-                                    <td>@(item.Modelo ?? "-")</td>
-                                    <td>
-                                        <a asp-action="EstacionDetails" asp-route-id="@item.EstacionId">
-                                            @item.Estacion.Nombre
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <small class="text-muted">
-                                            @item.Estacion.Linea.Nombre / @item.Estacion.Linea.Area.Nombre
-                                        </small>
-                                    </td>
-                                    <td class="text-center">
-                                        @if (item.Activo)
-                                        {
-                                            <span class="badge bg-success">Activo</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="badge bg-secondary">Inactivo</span>
-                                        }
-                                    </td>
-                                    <td class="text-end">
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <code>@item.Codigo</code>
+                                </td>
+                                <td>
+                                    <strong>@item.Nombre</strong>
+                                </td>
+                                <td>@(item.Modelo ?? "-")</td>
+                                <td>
+                                    <a asp-action="EstacionDetails" asp-route-id="@item.EstacionId">
+                                        @item.Estacion.Nombre
+                                    </a>
+                                </td>
+                                <td>
+                                    <small class="text-muted">
+                                        @item.Estacion.Linea.Nombre / @item.Estacion.Linea.Area.Nombre
+                                    </small>
+                                </td>
+                                <td class="text-center">
+                                    @if (item.Activo)
+                                    {
+                                        <span class="badge bg-success">Activo</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Inactivo</span>
+                                    }
+                                </td>
+                                <td class="text-end">
 
 
-                                        <div class="btn-group" role="group">
+                                    <div class="btn-group" role="group">
                                         <a asp-action="MaquinaDetails" asp-route-id="@item.Id" class="btn btn-sm btn-info">
                                             <i class="bi bi-eye"></i> Ver
                                         </a>
@@ -99,9 +108,9 @@
                                     </div>
 
 
-                                    </td>
-                                </tr>
-                            }
+                                </td>
+                            </tr>
+                        }
                         </tbody>
                     </table>
                 </div>
