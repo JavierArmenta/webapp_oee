@@ -1,0 +1,106 @@
+@model WebApp.Models.Maquina
+
+@{
+    ViewData["Title"] = "Editar Máquina";
+}
+
+<div class="container-fluid">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Maquinas">Máquinas</a></li>
+            <li class="breadcrumb-item active">Editar: @Model.Nombre</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-pencil me-2"></i>Editar Máquina</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="EditMaquina" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="text-muted mb-3">Datos Generales</h6>
+
+                                <div class="mb-3">
+                                    <label asp-for="EstacionId" class="form-label">Estación <span class="text-danger">*</span></label>
+                                    <select asp-for="EstacionId" asp-items="ViewBag.Estaciones" class="form-select">
+                                        <option value="">-- Seleccione una estación --</option>
+                                    </select>
+                                    <span asp-validation-for="EstacionId" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Nombre" class="form-label">Nombre <span class="text-danger">*</span></label>
+                                    <input asp-for="Nombre" class="form-control" />
+                                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Codigo" class="form-label">Código</label>
+                                    <input asp-for="Codigo" class="form-control" />
+                                    <span asp-validation-for="Codigo" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Descripcion" class="form-label">Descripción</label>
+                                    <textarea asp-for="Descripcion" class="form-control" rows="3"></textarea>
+                                    <span asp-validation-for="Descripcion" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <h6 class="text-muted mb-3">Especificaciones</h6>
+
+                                <div class="mb-3">
+                                    <label asp-for="Fabricante" class="form-label">Fabricante</label>
+                                    <input asp-for="Fabricante" class="form-control" />
+                                    <span asp-validation-for="Fabricante" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Modelo" class="form-label">Modelo</label>
+                                    <input asp-for="Modelo" class="form-control" />
+                                    <span asp-validation-for="Modelo" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="NumeroSerie" class="form-label">Número de Serie</label>
+                                    <input asp-for="NumeroSerie" class="form-control" />
+                                    <span asp-validation-for="NumeroSerie" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="form-check form-switch">
+                                        <input asp-for="Activo" class="form-check-input" type="checkbox" />
+                                        <label asp-for="Activo" class="form-check-label">Máquina activa</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle me-1"></i>Guardar Cambios
+                            </button>
+                            <a asp-action="Maquinas" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle me-1"></i>Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

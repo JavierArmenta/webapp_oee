@@ -30,7 +30,6 @@
 
 <body>
 
-
 	<!-- Page content -->
 	<div class="page-content">
 
@@ -44,38 +43,38 @@
 				<div class="content d-flex justify-content-center align-items-center">
 
 					<!-- Login form -->
-					<form id="account" method="post">
+					<form class="login-form" method="post">
 						<div class="card mb-0">
 							<div class="card-body">
 								<div class="text-center mb-3">
-									<i class="icon-reading icon-2x text-secondary border-secondary border-3 rounded-pill p-3 mb-3 mt-1"></i>
+								
 									<h5 class="mb-0">Accede a tu cuenta</h5>
-									<span class="d-block text-muted">Introduce tus credenciales</span>
+									<span class="d-block text-muted">Coloca tus credenciales</span>
 								</div>
 
-								<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-								<div class="form-group form-group-feedback form-group-feedback-left">
-
-
-									<input type="text" asp-for="Input.UserName" class="form-control" placeholder="Username">
-									<div class="form-control-feedback">
-										<i class="icon-user text-muted"></i>
-									</div>
-
-								</div>
-
-								<div class="form-group form-group-feedback form-group-feedback-left">
-									<input type="password" asp-for="Input.Password" class="form-control" placeholder="Password">
-									<div class="form-control-feedback">
-										<i class="icon-lock2 text-muted"></i>
+								<div class="mb-3">
+									<label class="form-label">Usuario</label>
+									<div class="form-control-feedback form-control-feedback-start">
+										<input type="text" asp-for="Input.UserName" class="form-control" placeholder="usuario">
+										<div class="form-control-feedback-icon">
+											<i class="ph-user-circle text-muted"></i>
+										</div>
 									</div>
 								</div>
 
-								<div class="form-group">
-									<button type="submit" class="btn btn-primary btn-block">Ingresar</button>
+								<div class="mb-3">
+									<label class="form-label">Password</label>
+									<div class="form-control-feedback form-control-feedback-start">
+										<input type="password" asp-for="Input.Password" class="form-control" placeholder="•••••••••••">
+										<div class="form-control-feedback-icon">
+											<i class="ph-lock text-muted"></i>
+										</div>
+									</div>
 								</div>
 
+								<div class="mb-3">
+									<button type="submit" class="btn btn-primary w-100">Entrar</button>
+								</div>
 
 							</div>
 						</div>
@@ -86,8 +85,6 @@
 				<!-- /content area -->
 
 
-
-
 			</div>
 			<!-- /inner content -->
 
@@ -96,6 +93,8 @@
 
 	</div>
 	<!-- /page content -->
+
+
 
 </body>
 </html>

@@ -1,0 +1,75 @@
+@model WebApp.Models.Estacion
+
+@{
+    ViewData["Title"] = "Crear Estación";
+}
+
+<div class="container-fluid">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Estaciones">Estaciones</a></li>
+            <li class="breadcrumb-item active">Nueva Estación</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Crear Nueva Estación</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="CreateEstacion" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="LineaId" class="form-label">Línea <span class="text-danger">*</span></label>
+                            <select asp-for="LineaId" asp-items="ViewBag.Lineas" class="form-select">
+                                <option value="">-- Seleccione una línea --</option>
+                            </select>
+                            <span asp-validation-for="LineaId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Nombre" class="form-label">Nombre <span class="text-danger">*</span></label>
+                            <input asp-for="Nombre" class="form-control" placeholder="Ej: Estación de Soldadura" />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Codigo" class="form-label">Código</label>
+                            <input asp-for="Codigo" class="form-control" placeholder="Ej: EST-001" />
+                            <span asp-validation-for="Codigo" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Descripcion" class="form-label">Descripción</label>
+                            <textarea asp-for="Descripcion" class="form-control" rows="3" placeholder="Descripción de la estación..."></textarea>
+                            <span asp-validation-for="Descripcion" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                <input asp-for="Activo" class="form-check-input" type="checkbox" value="true" checked />
+                                <label asp-for="Activo" class="form-check-label">Estación activa</label>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle me-1"></i>Guardar
+                            </button>
+                            <a asp-action="Estaciones" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle me-1"></i>Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

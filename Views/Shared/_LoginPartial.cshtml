@@ -6,25 +6,26 @@
     @if (SignInManager.IsSignedIn(User))
     {
 
-        <li class="nav-item nav-item-dropdown-lg dropdown dropdown-user h-100">
-            <a href="#" class="navbar-nav-link navbar-nav-link-toggler dropdown-toggle d-inline-flex align-items-center h-100" data-toggle="dropdown">
-                <img src="~/global_assets/images/placeholders/placeholder.jpg" class="rounded-pill mr-lg-2" height="34" alt="">
-                <span class="d-none d-lg-inline-block">@User.Identity?.Name</span>
-            </a>
+        <li class="nav-item nav-item-dropdown-lg dropdown ms-lg-2">
+					<a href="#" class="navbar-nav-link align-items-center rounded-pill p-1" data-bs-toggle="dropdown">
+						<div class="status-indicator-container">
+						</div>
+						<span class="d-none d-lg-inline-block mx-lg-2">@User.Identity?.Name</span>
+					</a>
 
-            <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">
-                    Administración
-                </a>
-                <div class="dropdown-divider"></div>
-                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+					<div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">
+                            <i class="ph-gear me-2"></i>
+                            Administración
+                        </a>
+                        <a asp-controller="Home" asp-action="Logout" class="dropdown-item">
+                            <i class="ph-user-circle me-2"></i>
+                            Logout
+                        </a>
+					</div>
 
-                    <button type="submit" class="dropdown-item">Logout</button>
-                </form>
 
-            </div>
-        </li>
-
+		</li>
 
     }
     else
