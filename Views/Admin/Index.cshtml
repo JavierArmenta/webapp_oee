@@ -6,6 +6,16 @@
 
     <!-- Mini table -->
     <div class="card">
+        <div class="card-header">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="showInactiveToggle"
+                       @(ViewBag.ShowInactive ? "checked" : "")
+                       onchange="toggleInactiveUsers(this.checked)">
+                <label class="form-check-label" for="showInactiveToggle">
+                    Mostrar usuarios desactivados
+                </label>
+            </div>
+        </div>
         <div class="table-responsive">
             <table class="table table-xs">
                 <thead>
@@ -106,5 +116,9 @@
 
 @section Scripts
 {
-
+    <script>
+        function toggleInactiveUsers(showInactive) {
+            window.location.href = '@Url.Action("Index", "Admin")?showInactive=' + showInactive;
+        }
+    </script>
 }

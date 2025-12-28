@@ -19,9 +19,14 @@ namespace WebApp.Controllers
             _roleManager = roleManager;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(bool showInactive = false)
         {
-            return View(userManager.Users);
+            var users = showInactive
+                ? userManager.Users
+                : userManager.Users.Where(u => u.IsActive);
+
+            ViewBag.ShowInactive = showInactive;
+            return View(users);
         }
 
         public async Task<IActionResult> Update(string id)
