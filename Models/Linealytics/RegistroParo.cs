@@ -1,0 +1,63 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace WebApp.Models.Linealytics
+{
+    [Table("RegistrosParos", Schema = "linealytics")]
+    public class RegistroParo
+    {
+        [Key]
+        public int Id { get; set; }
+
+        [Required]
+        public int SesionProduccionId { get; set; }
+
+        [Required]
+        public int CausaParoId { get; set; }
+
+        [Required]
+        public DateTime FechaHoraInicio { get; set; }
+
+        public DateTime? FechaHoraFin { get; set; }
+
+        public int? DuracionMinutos { get; set; }
+
+        public int? OperadorResponsableId { get; set; }
+
+        public int? OperadorSolucionaId { get; set; }
+
+        [MaxLength(1000)]
+        public string? Descripcion { get; set; }
+
+        [MaxLength(1000)]
+        public string? Solucion { get; set; }
+
+        public bool EsMicroParo { get; set; } = false;
+
+        [MaxLength(20)]
+        public string Estado { get; set; } = "Abierto"; // Abierto, Cerrado, EnAtencion
+
+        public DateTime? FechaAtencion { get; set; }
+
+        public DateTime? FechaCierre { get; set; }
+
+        public DateTime FechaCreacion { get; set; } = DateTime.UtcNow;
+
+        public DateTime? FechaModificacion { get; set; }
+
+        // Relaciones
+        [ForeignKey("SesionProduccionId")]
+        public virtual SesionProduccion SesionProduccion { get; set; } = null!;
+
+        [ForeignKey("CausaParoId")]
+        public virtual CausaParo CausaParo { get; set; } = null!;
+
+        [ForeignKey("OperadorResponsableId")]
+        public virtual Operador? OperadorResponsable { get; set; }
+
+        [ForeignKey("OperadorSolucionaId")]
+        public virtual Operador? OperadorSoluciona { get; set; }
+
+        public virtual ICollection<HistorialCambioParo> HistorialCambios { get; set; } = new List<HistorialCambioParo>();
+    }
+}

@@ -1,0 +1,97 @@
+@{
+    ViewData["Title"] = "Linealytics - Dashboard";
+}
+
+<div class="container-fluid">
+
+    <div class="card shadow-sm mt-3">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="h3 mb-0">
+                    <i class="bi bi-graph-up me-2"></i>Linealytics Dashboard
+                </h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <!-- Turnos -->
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-clock-history display-4 text-primary"></i>
+                    <h5 class="card-title mt-3">Turnos</h5>
+                    <p class="card-text text-muted">Gestión de turnos de trabajo</p>
+                    <a asp-action="Turnos" class="btn btn-primary">
+                        <i class="bi bi-arrow-right-circle me-1"></i>Administrar
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Productos -->
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-box-seam display-4 text-success"></i>
+                    <h5 class="card-title mt-3">Productos</h5>
+                    <p class="card-text text-muted">Catálogo de productos</p>
+                    <a asp-action="Productos" class="btn btn-success">
+                        <i class="bi bi-arrow-right-circle me-1"></i>Administrar
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categorías de Paro -->
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-exclamation-triangle display-4 text-warning"></i>
+                    <h5 class="card-title mt-3">Categorías de Paro</h5>
+                    <p class="card-text text-muted">Tipos de paros</p>
+                    <a asp-action="CategoriasParo" class="btn btn-warning">
+                        <i class="bi bi-arrow-right-circle me-1"></i>Administrar
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Causas de Paro -->
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-list-ul display-4 text-danger"></i>
+                    <h5 class="card-title mt-3">Causas de Paro</h5>
+                    <p class="card-text text-muted">Detalle de causas</p>
+                    <a asp-action="CausasParo" class="btn btn-danger">
+                        <i class="bi bi-arrow-right-circle me-1"></i>Administrar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-info-circle me-2"></i>Acerca de Linealytics</h5>
+                </div>
+                <div class="card-body">
+                    <p>
+                        <strong>Linealytics</strong> es el módulo de análisis de producción y eficiencia que te permite:
+                    </p>
+                    <ul>
+                        <li><strong>Calcular OEE</strong> (Overall Equipment Effectiveness) en tiempo real</li>
+                        <li><strong>Registrar paros</strong> de máquinas con categorización detallada</li>
+                        <li><strong>Analizar causas raíz</strong> mediante diagramas de Pareto</li>
+                        <li><strong>Monitorear producción</strong> hora por hora por turno</li>
+                        <li><strong>Generar reportes</strong> de disponibilidad, rendimiento y calidad</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

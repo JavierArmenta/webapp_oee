@@ -1,0 +1,61 @@
+@model WebApp.Models.Linealytics.Turno
+
+@{
+    ViewData["Title"] = "Crear Turno";
+}
+
+<div class="container-fluid">
+    <div class="card shadow-sm mt-3">
+        <div class="card-header">
+            <h4 class="mb-0">
+                <i class="bi bi-plus-circle me-2"></i>Crear Nuevo Turno
+            </h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="CreateTurno" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Nombre" class="form-label">Nombre del Turno</label>
+                        <input asp-for="Nombre" class="form-control" placeholder="Ej: Matutino" />
+                        <span asp-validation-for="Nombre" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="DuracionMinutos" class="form-label">Duración (minutos)</label>
+                        <input asp-for="DuracionMinutos" class="form-control" type="number" min="1" placeholder="480" />
+                        <span asp-validation-for="DuracionMinutos" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="HoraInicio" class="form-label">Hora de Inicio</label>
+                        <input asp-for="HoraInicio" class="form-control" type="time" />
+                        <span asp-validation-for="HoraInicio" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="HoraFin" class="form-label">Hora de Fin</label>
+                        <input asp-for="HoraFin" class="form-control" type="time" />
+                        <span asp-validation-for="HoraFin" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save me-1"></i>Guardar
+                    </button>
+                    <a asp-action="Turnos" class="btn btn-secondary">
+                        <i class="bi bi-x-circle me-1"></i>Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

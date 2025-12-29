@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Models;
+using WebApp.Models.Linealytics;
 
 namespace WebApp.Data
 {
@@ -14,10 +15,10 @@ namespace WebApp.Data
 
         // DbSet para Operadores
         public DbSet<Operador> Operadores { get; set; }
-        
+
         // DbSet para RolesOperador
         public DbSet<RolOperador> RolesOperador { get; set; }
-        
+
         // DbSet para la tabla intermedia
         public DbSet<OperadorRolOperador> OperadorRolesOperador { get; set; }
 
@@ -26,6 +27,16 @@ namespace WebApp.Data
         public DbSet<Linea> Lineas { get; set; }
         public DbSet<Estacion> Estaciones { get; set; }
         public DbSet<Maquina> Maquinas { get; set; }
+
+        // DbSet para Linealytics
+        public DbSet<Turno> Turnos { get; set; }
+        public DbSet<Producto> Productos { get; set; }
+        public DbSet<CategoriaParo> CategoriasParo { get; set; }
+        public DbSet<CausaParo> CausasParo { get; set; }
+        public DbSet<SesionProduccion> SesionesProduccion { get; set; }
+        public DbSet<RegistroParo> RegistrosParos { get; set; }
+        public DbSet<RegistroProduccionHora> RegistrosProduccionHora { get; set; }
+        public DbSet<HistorialCambioParo> HistorialCambiosParos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -169,7 +180,7 @@ namespace WebApp.Data
             builder.Entity<Maquina>(entity =>
             {
                 entity.ToTable("Maquinas", "planta");
-                
+
                 entity.HasIndex(e => e.Codigo)
                     .IsUnique()
                     .HasDatabaseName("IX_Maquinas_Codigo");
@@ -185,6 +196,172 @@ namespace WebApp.Data
                     .WithMany(es => es.Maquinas)
                     .HasForeignKey(e => e.EstacionId)
                     .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // ========== CONFIGURACIÓN LINEALYTICS ==========
+
+            // Configuración para Turnos
+            builder.Entity<Turno>(entity =>
+            {
+                entity.ToTable("Turnos", "linealytics");
+
+                entity.HasIndex(e => e.Nombre)
+                    .IsUnique()
+                    .HasDatabaseName("IX_Turnos_Nombre");
+
+                entity.Property(e => e.FechaCreacion)
+                    .HasDefaultValueSql("NOW()");
+            });
+
+            // Configuración para Productos
+            builder.Entity<Producto>(entity =>
+            {
+                entity.ToTable("Productos", "linealytics");
+
+                entity.HasIndex(e => e.Codigo)
+                    .IsUnique()
+                    .HasDatabaseName("IX_Productos_Codigo");
+
+                entity.Property(e => e.FechaCreacion)
+                    .HasDefaultValueSql("NOW()");
+            });
+
+            // Configuración para CategoriasParo
+            builder.Entity<CategoriaParo>(entity =>
+            {
+                entity.ToTable("CategoriasParo", "linealytics");
+
+                entity.HasIndex(e => e.Nombre)
+                    .IsUnique()
+                    .HasDatabaseName("IX_CategoriasParo_Nombre");
+
+                entity.Property(e => e.FechaCreacion)
+                    .HasDefaultValueSql("NOW()");
+            });
+
+            // Configuración para CausasParo
+            builder.Entity<CausaParo>(entity =>
+            {
+                entity.ToTable("CausasParo", "linealytics");
+
+                entity.HasIndex(e => new { e.CategoriaParoId, e.Nombre })
+                    .IsUnique()
+                    .HasDatabaseName("IX_CausasParo_CategoriaParoId_Nombre");
+
+                entity.Property(e => e.FechaCreacion)
+                    .HasDefaultValueSql("NOW()");
+
+                entity.HasOne(e => e.CategoriaParo)
+                    .WithMany(c => c.CausasParo)
+                    .HasForeignKey(e => e.CategoriaParoId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // Configuración para SesionesProduccion
+            builder.Entity<SesionProduccion>(entity =>
+            {
+                entity.ToTable("SesionesProduccion", "linealytics");
+
+                entity.HasIndex(e => new { e.MaquinaId, e.FechaInicio })
+                    .HasDatabaseName("IX_SesionesProduccion_MaquinaId_FechaInicio");
+
+                entity.Property(e => e.FechaCreacion)
+                    .HasDefaultValueSql("NOW()");
+
+                entity.HasOne(e => e.Maquina)
+                    .WithMany()
+                    .HasForeignKey(e => e.MaquinaId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(e => e.Turno)
+                    .WithMany(t => t.SesionesProduccion)
+                    .HasForeignKey(e => e.TurnoId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(e => e.Producto)
+                    .WithMany(p => p.SesionesProduccion)
+                    .HasForeignKey(e => e.ProductoId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // Configuración para RegistrosParos
+            builder.Entity<RegistroParo>(entity =>
+            {
+                entity.ToTable("RegistrosParos", "linealytics");
+
+                entity.HasIndex(e => new { e.SesionProduccionId, e.FechaHoraInicio })
+                    .HasDatabaseName("IX_RegistrosParos_SesionProduccionId_FechaHoraInicio");
+
+                entity.HasIndex(e => e.Estado)
+                    .HasDatabaseName("IX_RegistrosParos_Estado");
+
+                entity.Property(e => e.FechaCreacion)
+                    .HasDefaultValueSql("NOW()");
+
+                entity.HasOne(e => e.SesionProduccion)
+                    .WithMany(s => s.RegistrosParos)
+                    .HasForeignKey(e => e.SesionProduccionId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(e => e.CausaParo)
+                    .WithMany(c => c.RegistrosParos)
+                    .HasForeignKey(e => e.CausaParoId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(e => e.OperadorResponsable)
+                    .WithMany()
+                    .HasForeignKey(e => e.OperadorResponsableId)
+                    .OnDelete(DeleteBehavior.SetNull);
+
+                entity.HasOne(e => e.OperadorSoluciona)
+                    .WithMany()
+                    .HasForeignKey(e => e.OperadorSolucionaId)
+                    .OnDelete(DeleteBehavior.SetNull);
+            });
+
+            // Configuración para RegistrosProduccionHora
+            builder.Entity<RegistroProduccionHora>(entity =>
+            {
+                entity.ToTable("RegistrosProduccionHora", "linealytics");
+
+                entity.HasIndex(e => new { e.SesionProduccionId, e.FechaHora })
+                    .IsUnique()
+                    .HasDatabaseName("IX_RegistrosProduccionHora_SesionProduccionId_FechaHora");
+
+                entity.Property(e => e.FechaCreacion)
+                    .HasDefaultValueSql("NOW()");
+
+                entity.HasOne(e => e.SesionProduccion)
+                    .WithMany(s => s.RegistrosProduccionHora)
+                    .HasForeignKey(e => e.SesionProduccionId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(e => e.Producto)
+                    .WithMany(p => p.RegistrosProduccionHora)
+                    .HasForeignKey(e => e.ProductoId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(e => e.Operador)
+                    .WithMany()
+                    .HasForeignKey(e => e.OperadorId)
+                    .OnDelete(DeleteBehavior.SetNull);
+            });
+
+            // Configuración para HistorialCambiosParos
+            builder.Entity<HistorialCambioParo>(entity =>
+            {
+                entity.ToTable("HistorialCambiosParos", "linealytics");
+
+                entity.HasIndex(e => e.RegistroParoId)
+                    .HasDatabaseName("IX_HistorialCambiosParos_RegistroParoId");
+
+                entity.Property(e => e.FechaModificacion)
+                    .HasDefaultValueSql("NOW()");
+
+                entity.HasOne(e => e.RegistroParo)
+                    .WithMany(r => r.HistorialCambios)
+                    .HasForeignKey(e => e.RegistroParoId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
         }
     }

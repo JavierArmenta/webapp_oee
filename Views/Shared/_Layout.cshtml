@@ -20,11 +20,9 @@
 	<!-- Core JS files -->
 	<script src="~/assets/demo/demo_configurator.js"></script>
 	<script src="~/assets/js/bootstrap/bootstrap.bundle.min.js"></script>
-  
-  <script src="~/assets/js/app.js"></script>
+
+	<script src="~/assets/js/app.js"></script>
 	<!-- /core JS files -->
-
-
 
 
 </head>
@@ -136,6 +134,17 @@
 						</li>
 					}
 
+					<li class="nav-item nav-item-submenu">
+						<a href="#" class="nav-link">
+							<i class="ph-layout"></i>
+							<span>Linealytics</span>
+						</a>
+						<ul class="nav-group-sub collapse">
+							<li class="nav-item">
+								<a href="~/Linealytics" class="nav-link">Modificar usuario</a>
+							</li>
+						</ul>
+					</li>
 
 				</ul>
 			</div>
@@ -149,9 +158,12 @@
 	<!-- Main content -->
 	<div class="content-wrapper">
 
+		<div class="content-inner">
+			<div class="content">
+				@RenderBody()
 
-		@RenderBody()
-
+			</div>
+		</div>
 	</div>
 	<!-- /inner content -->
 
