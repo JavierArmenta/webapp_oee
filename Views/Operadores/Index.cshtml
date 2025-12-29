@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebApp.Models.Operador>
+@model IEnumerable<WebApp.Models.Operador>
 
 @{
     ViewData["Title"] = "Gestión de Operadores";
@@ -19,21 +19,6 @@
         </div>
     </div>
 
-    @if (TempData["Success"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <i class="bi bi-check-circle me-2"></i>@TempData["Success"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    }
-    @if (TempData["Error"] != null)
-    {
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <i class="bi bi-exclamation-triangle me-2"></i>@TempData["Error"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    }
-
     <div class="card shadow-sm">
         <div class="card-body">
             @if (!Model.Any())
@@ -49,7 +34,7 @@
             else
             {
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle">
+                    <table class="table table-hover align-middle datatable-basic">
                         <thead class="table-light">
                         <tr>
                             <th>Número de Empleado</th>
@@ -118,3 +103,89 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/assets/js/jquery/jquery.min.js"></script>
+    <script src="~/assets/js/vendor/tables/datatables/datatables.min.js"></script>
+
+    <script src="~/assets/js/vendor/notifications/sweet_alert.min.js"></script>
+    <script src="~/assets/demo/pages/extra_sweetalert.js"></script>
+
+    <script>
+        // Inicializar SweetAlert
+        const swalInit = swal.mixin({
+            buttonsStyling: false,
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            }
+        });
+
+        // Inicializar DataTables
+        const _componentDatatableBasic = function() {
+            if (!$().DataTable) {
+                console.warn('Warning - datatables.min.js is not loaded.');
+                return;
+            }
+
+            // Setting datatable defaults
+            $.extend( $.fn.dataTable.defaults, {
+                autoWidth: false,
+                columnDefs: [{
+                    orderable: false,
+                    width: 100,
+                    targets: [ 5 ]
+                }],
+                dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
+                language: {
+                    search: '<span class="me-3">Filter:</span> <div class="form-control-feedback form-control-feedback-end flex-fill">_INPUT_<div class="form-control-feedback-icon"><i class="ph-magnifying-glass opacity-50"></i></div></div>',
+                    searchPlaceholder: 'Type to filter...',
+                    lengthMenu: '<span class="me-3">Show:</span> _MENU_',
+                    paginate: { 'first': 'First', 'last': 'Last', 'next': document.dir == "rtl" ? '&larr;' : '&rarr;', 'previous': document.dir == "rtl" ? '&rarr;' : '&larr;' }
+                }
+            });
+
+            // Basic datatable
+            $('.datatable-basic').DataTable();
+        };
+
+        // Inicializar al cargar el documento
+        document.addEventListener('DOMContentLoaded', function() {
+            _componentDatatableBasic();
+
+            // Mostrar notificaciones de éxito
+            @if (TempData["Success"] != null)
+            {
+                <text>
+                swalInit.fire({
+                    title: '¡Éxito!',
+                    text: '@TempData["Success"]',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    buttonsStyling: false,
+                    customClass: {
+                        confirmButton: 'btn btn-success'
+                    }
+                });
+                </text>
+            }
+
+            // Mostrar notificaciones de error
+            @if (TempData["Error"] != null)
+            {
+                <text>
+                swalInit.fire({
+                    title: 'Error',
+                    text: '@TempData["Error"]',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    buttonsStyling: false,
+                    customClass: {
+                        confirmButton: 'btn btn-danger'
+                    }
+                });
+                </text>
+            }
+        });
+    </script>
+}
