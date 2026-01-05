@@ -10,7 +10,9 @@ namespace WebApp.Models.Linealytics
         public int Id { get; set; }
 
         [Required]
-        public int SesionProduccionId { get; set; }
+        public int MaquinaId { get; set; }
+
+        public int? MetricasMaquinaId { get; set; }
 
         [Required]
         public int CausaParoId { get; set; }
@@ -46,8 +48,11 @@ namespace WebApp.Models.Linealytics
         public DateTime? FechaModificacion { get; set; }
 
         // Relaciones
-        [ForeignKey("SesionProduccionId")]
-        public virtual SesionProduccion SesionProduccion { get; set; } = null!;
+        [ForeignKey("MaquinaId")]
+        public virtual Maquina Maquina { get; set; } = null!;
+
+        [ForeignKey("MetricasMaquinaId")]
+        public virtual MetricasMaquina? MetricasMaquina { get; set; }
 
         [ForeignKey("CausaParoId")]
         public virtual CausaParo CausaParo { get; set; } = null!;

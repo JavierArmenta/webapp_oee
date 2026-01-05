@@ -39,7 +39,7 @@
                         <tr>
                             <th>Número de Empleado</th>
                             <th>Nombre Completo</th>
-                            <th class="text-center">Roles</th>
+                            <th class="text-center">Departamentos</th>
                             <th class="text-center">Estado</th>
                             <th class="text-center">Fecha de Creación</th>
                             <th class="text-end">Acciones</th>
@@ -56,16 +56,16 @@
                                     <strong>@item.NombreCompleto</strong>
                                 </td>
                                 <td class="text-center">
-                                    @if (item.OperadorRoles.Any())
+                                    @if (item.OperadorDepartamentos.Any())
                                     {
-                                        @foreach (var rol in item.OperadorRoles)
+                                        @foreach (var depto in item.OperadorDepartamentos)
                                         {
-                                            <span class="badge bg-info me-1">@rol.RolOperador.Nombre</span>
+                                            <span class="badge bg-info me-1">@depto.DepartamentoOperador.Nombre</span>
                                         }
                                     }
                                     else
                                     {
-                                        <span class="text-muted">Sin roles</span>
+                                        <span class="text-muted">Sin departamentos</span>
                                     }
                                 </td>
                                 <td class="text-center">

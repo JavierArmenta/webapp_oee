@@ -1,0 +1,88 @@
+@model WebApp.Models.Boton
+
+@{
+    ViewData["Title"] = "Editar Botón";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="fas fa-edit"></i> Editar Botón</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-controller="Linealytics" asp-action="EditBoton" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="FechaCreacion" />
+                        <input type="hidden" asp-for="FechaUltimaActivacion" />
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Codigo" class="form-label"></label>
+                                <input asp-for="Codigo" class="form-control" placeholder="Ej: BTN-001" />
+                                <span asp-validation-for="Codigo" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Nombre" class="form-label"></label>
+                                <input asp-for="Nombre" class="form-control" placeholder="Ej: Botón de Emergencia 1" />
+                                <span asp-validation-for="Nombre" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="DepartamentoOperadorId" class="form-label"></label>
+                            <select asp-for="DepartamentoOperadorId" class="form-select" asp-items="ViewBag.Departamentos">
+                                <option value="">-- Seleccione un Departamento --</option>
+                            </select>
+                            <span asp-validation-for="DepartamentoOperadorId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Descripcion" class="form-label"></label>
+                            <textarea asp-for="Descripcion" class="form-control" rows="3" placeholder="Descripción del botón (opcional)"></textarea>
+                            <span asp-validation-for="Descripcion" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" asp-for="Activo" id="switchActivo">
+                                <label class="form-check-label" for="switchActivo">
+                                    Botón Activo
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info" role="alert">
+                            <i class="fas fa-info-circle"></i>
+                            <strong>Fecha de creación:</strong> @Model.FechaCreacion.ToString("dd/MM/yyyy HH:mm")<br />
+                            @if (Model.FechaUltimaActivacion.HasValue)
+                            {
+                                <strong>Última activación:</strong> @Model.FechaUltimaActivacion.Value.ToString("dd/MM/yyyy HH:mm")
+                            }
+                            else
+                            {
+                                <text><strong>Última activación:</strong> Nunca</text>
+                            }
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a asp-action="Botones" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Guardar Cambios
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

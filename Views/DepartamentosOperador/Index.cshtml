@@ -1,7 +1,7 @@
-@model IEnumerable<WebApp.Models.RolOperador>
+@model IEnumerable<WebApp.Models.DepartamentoOperador>
 
 @{
-    ViewData["Title"] = "Gestión de Roles de Operador";
+    ViewData["Title"] = "Gestión de Departamentos de Operador";
 }
 
 <div class="container-fluid">
@@ -10,10 +10,10 @@
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center">
                 <h1 class="h3 mb-0">
-                    <i class="bi bi-person-badge me-2"></i>Roles de Operador
+                    <i class="bi bi-building me-2"></i>Departamentos de Operador
                 </h1>
                 <a asp-action="Create" class="btn btn-primary">
-                    <i class="bi bi-plus-circle me-1"></i>Nuevo Rol
+                    <i class="bi bi-plus-circle me-1"></i>Nuevo Departamento
                 </a>
             </div>
         </div>
@@ -25,9 +25,9 @@
             {
                 <div class="text-center py-5">
                     <i class="bi bi-inbox display-1 text-muted"></i>
-                    <p class="text-muted mt-3">No hay roles registrados.</p>
+                    <p class="text-muted mt-3">No hay departamentos registrados.</p>
                     <a asp-action="Create" class="btn btn-primary">
-                        <i class="bi bi-plus-circle me-1"></i>Crear primer rol
+                        <i class="bi bi-plus-circle me-1"></i>Crear primer departamento
                     </a>
                 </div>
             }
@@ -80,7 +80,7 @@
                                     {
                                         <form asp-action="Deactivate" asp-route-id="@item.Id" method="post" class="d-inline deactivate-form">
                                             @Html.AntiForgeryToken()
-                                            <button type="button" class="btn btn-sm btn-warning deactivate-rol-btn">
+                                            <button type="button" class="btn btn-sm btn-warning deactivate-departamento-btn">
                                                 <i class="bi bi-toggle-off me-1"></i>Desactivar
                                             </button>
                                         </form>
@@ -110,7 +110,7 @@
     <script src="~/assets/js/vendor/tables/datatables/datatables.min.js"></script>
 
     <script src="~/assets/js/vendor/notifications/sweet_alert.min.js"></script>
-    <script src="~/assets/demo/pages/extra_sweetalert.js"></script>
+    <script src="~/assets/js/demo/pages/extra_sweetalert.js"></script>
 
     <script>
         // Inicializar SweetAlert
@@ -156,8 +156,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             _componentDatatableBasic();
 
-            // Confirmación para desactivar rol
-            const deactivateButtons = document.querySelectorAll('.deactivate-rol-btn');
+            // Confirmación para desactivar departamento
+            const deactivateButtons = document.querySelectorAll('.deactivate-departamento-btn');
 
             deactivateButtons.forEach(function(button) {
                 button.addEventListener('click', function() {
@@ -165,7 +165,7 @@
 
                     swalInit.fire({
                         title: '¿Está seguro?',
-                        text: "¿Desea desactivar este rol?",
+                        text: "¿Desea desactivar este departamento?",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonText: 'Sí, desactivar',
@@ -182,7 +182,7 @@
                         else if(result.dismiss === swal.DismissReason.cancel) {
                             swalInit.fire(
                                 'Cancelado',
-                                'El rol no ha sido desactivado',
+                                'El departamento no ha sido desactivado',
                                 'info'
                             );
                         }

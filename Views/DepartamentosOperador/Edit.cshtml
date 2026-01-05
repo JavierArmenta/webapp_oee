@@ -1,7 +1,7 @@
-@model WebApp.Models.RolOperador
+@model WebApp.Models.DepartamentoOperador
 
 @{
-    ViewData["Title"] = "Editar Rol de Operador";
+    ViewData["Title"] = "Editar Departamento de Operador";
 }
 
 <div class="container mt-4">
@@ -9,14 +9,14 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h2>Editar Rol de Operador</h2>
+                    <h2>Editar Departamento de Operador</h2>
                 </div>
                 <div class="card-body">
                     <form asp-action="Edit" method="post">
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-                        
+
                         <input type="hidden" asp-for="Id" />
-                        
+
                         <div class="mb-3">
                             <label asp-for="Nombre" class="form-label"></label>
                             <input asp-for="Nombre" class="form-control" />

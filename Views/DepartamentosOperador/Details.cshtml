@@ -1,7 +1,7 @@
-@model WebApp.Models.RolOperador
+@model WebApp.Models.DepartamentoOperador
 
 @{
-    ViewData["Title"] = "Detalles del Rol";
+    ViewData["Title"] = "Detalles del Departamento";
 }
 
 <div class="container mt-4">
@@ -9,7 +9,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h2>Detalles del Rol</h2>
+                    <h2>Detalles del Departamento</h2>
                 </div>
                 <div class="card-body">
                     <dl class="row">
@@ -36,16 +36,16 @@
 
                         <dt class="col-sm-4">Operadores Asignados:</dt>
                         <dd class="col-sm-8">
-                            @if (Model.OperadorRoles.Any())
+                            @if (Model.OperadorDepartamentos.Any())
                             {
                                 <ul class="list-unstyled">
-                                    @foreach (var operadorRol in Model.OperadorRoles)
+                                    @foreach (var operadorDept in Model.OperadorDepartamentos)
                                     {
                                         <li>
-                                            <a asp-controller="Operadores" asp-action="Details" asp-route-id="@operadorRol.Operador.Id">
-                                                @operadorRol.Operador.NombreCompleto
+                                            <a asp-controller="Operadores" asp-action="Details" asp-route-id="@operadorDept.Operador.Id">
+                                                @operadorDept.Operador.NombreCompleto
                                             </a>
-                                            <small class="text-muted">(@operadorRol.Operador.NumeroEmpleado)</small>
+                                            <small class="text-muted">(@operadorDept.Operador.NumeroEmpleado)</small>
                                         </li>
                                     }
                                 </ul>
@@ -64,9 +64,6 @@
                         <div>
                             <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
                                 <i class="bi bi-pencil"></i> Editar
-                            </a>
-                            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
-                                <i class="bi bi-trash"></i> Eliminar
                             </a>
                         </div>
                     </div>

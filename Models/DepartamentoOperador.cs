@@ -3,15 +3,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApp.Models
 {
-    [Table("RolesOperador")]
-    public class RolOperador
+    [Table("DepartamentosOperador")]
+    public class DepartamentoOperador
     {
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "El nombre del rol es requerido")]
+        [Required(ErrorMessage = "El nombre del departamento es requerido")]
         [StringLength(100)]
-        [Display(Name = "Nombre del Rol")]
+        [Display(Name = "Nombre del Departamento")]
         public string Nombre { get; set; } = string.Empty;
 
         [StringLength(255)]
@@ -25,6 +25,6 @@ namespace WebApp.Models
         public DateTime FechaCreacion { get; set; } = DateTime.UtcNow;
 
         // Relación muchos a muchos con Operadores
-        public ICollection<OperadorRolOperador> OperadorRoles { get; set; } = new List<OperadorRolOperador>();
+        public ICollection<OperadorDepartamento> OperadorDepartamentos { get; set; } = new List<OperadorDepartamento>();
     }
 }

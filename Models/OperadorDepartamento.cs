@@ -3,23 +3,23 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApp.Models
 {
-    [Table("OperadorRolesOperador")]
-    public class OperadorRolOperador
+    [Table("OperadorDepartamentos")]
+    public class OperadorDepartamento
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
         public int OperadorId { get; set; }
-        
+
         [ForeignKey("OperadorId")]
         public Operador Operador { get; set; } = null!;
 
         [Required]
-        public int RolOperadorId { get; set; }
-        
-        [ForeignKey("RolOperadorId")]
-        public RolOperador RolOperador { get; set; } = null!;
+        public int DepartamentoOperadorId { get; set; }
+
+        [ForeignKey("DepartamentoOperadorId")]
+        public DepartamentoOperador DepartamentoOperador { get; set; } = null!;
 
         [Display(Name = "Fecha de Asignación")]
         public DateTime FechaAsignacion { get; set; } = DateTime.UtcNow;

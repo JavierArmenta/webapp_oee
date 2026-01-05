@@ -50,21 +50,21 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Roles</label>
-                            @if (ViewBag.RolesOperador != null && ((List<WebApp.Models.RolOperador>)ViewBag.RolesOperador).Any())
+                            <label class="form-label">Departamentos</label>
+                            @if (ViewBag.DepartamentosOperador != null && ((List<WebApp.Models.DepartamentoOperador>)ViewBag.DepartamentosOperador).Any())
                             {
-                                var rolesSeleccionados = (List<int>)ViewBag.RolesSeleccionados;
+                                var departamentosSeleccionados = (List<int>)ViewBag.DepartamentosSeleccionados;
                                 <div class="border rounded p-3">
-                                    @foreach (var rol in (List<WebApp.Models.RolOperador>)ViewBag.RolesOperador)
+                                    @foreach (var depto in (List<WebApp.Models.DepartamentoOperador>)ViewBag.DepartamentosOperador)
                                     {
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="RolesSeleccionados" value="@rol.Id" id="rol_@rol.Id" 
-                                                   @(rolesSeleccionados.Contains(rol.Id) ? "checked" : "")>
-                                            <label class="form-check-label" for="rol_@rol.Id">
-                                                @rol.Nombre
-                                                @if (!string.IsNullOrEmpty(rol.Descripcion))
+                                            <input class="form-check-input" type="checkbox" name="DepartamentosSeleccionados" value="@depto.Id" id="depto_@depto.Id"
+                                                   @(departamentosSeleccionados.Contains(depto.Id) ? "checked" : "")>
+                                            <label class="form-check-label" for="depto_@depto.Id">
+                                                @depto.Nombre
+                                                @if (!string.IsNullOrEmpty(depto.Descripcion))
                                                 {
-                                                    <small class="text-muted">- @rol.Descripcion</small>
+                                                    <small class="text-muted">- @depto.Descripcion</small>
                                                 }
                                             </label>
                                         </div>
@@ -74,7 +74,7 @@
                             else
                             {
                                 <div class="alert alert-warning">
-                                    No hay roles disponibles. <a asp-controller="RolesOperador" asp-action="Create">Crear un rol</a>
+                                    No hay departamentos disponibles. <a asp-controller="DepartamentosOperador" asp-action="Create">Crear un departamento</a>
                                 </div>
                             }
                         </div>

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WebApp.Data;
@@ -11,9 +12,11 @@ using WebApp.Data;
 namespace WebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251231013134_RenameRolesToDepartamentos")]
+    partial class RenameRolesToDepartamentos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -285,17 +288,25 @@ namespace WebApp.Migrations
                     b.Property<bool>("Activo")
                         .HasColumnType("boolean");
 
+                    b.Property<int>("AreaId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Codigo")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<int>("DepartamentoOperadorId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Descripcion")
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
+
+                    b.Property<string>("DireccionIP")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("DireccionMAC")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<DateTime>("FechaCreacion")
                         .ValueGeneratedOnAdd()
@@ -312,11 +323,14 @@ namespace WebApp.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AreaId");
+
                     b.HasIndex("Codigo")
                         .IsUnique()
                         .HasDatabaseName("IX_Botones_Codigo");
 
-                    b.HasIndex("DepartamentoOperadorId");
+                    b.HasIndex("DireccionMAC")
+                        .HasDatabaseName("IX_Botones_DireccionMAC");
 
                     b.ToTable("Botones", "planta");
                 });
@@ -1244,13 +1258,13 @@ namespace WebApp.Migrations
 
             modelBuilder.Entity("WebApp.Models.Boton", b =>
                 {
-                    b.HasOne("WebApp.Models.DepartamentoOperador", "DepartamentoOperador")
+                    b.HasOne("WebApp.Models.Area", "Area")
                         .WithMany()
-                        .HasForeignKey("DepartamentoOperadorId")
+                        .HasForeignKey("AreaId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("DepartamentoOperador");
+                    b.Navigation("Area");
                 });
 
             modelBuilder.Entity("WebApp.Models.Estacion", b =>

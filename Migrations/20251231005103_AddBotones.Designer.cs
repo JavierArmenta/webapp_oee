@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WebApp.Data;
@@ -11,9 +12,11 @@ using WebApp.Data;
 namespace WebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251231005103_AddBotones")]
+    partial class AddBotones
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -285,17 +288,25 @@ namespace WebApp.Migrations
                     b.Property<bool>("Activo")
                         .HasColumnType("boolean");
 
+                    b.Property<int>("AreaId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Codigo")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<int>("DepartamentoOperadorId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Descripcion")
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
+
+                    b.Property<string>("DireccionIP")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("DireccionMAC")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<DateTime>("FechaCreacion")
                         .ValueGeneratedOnAdd()
@@ -312,47 +323,16 @@ namespace WebApp.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AreaId");
+
                     b.HasIndex("Codigo")
                         .IsUnique()
                         .HasDatabaseName("IX_Botones_Codigo");
 
-                    b.HasIndex("DepartamentoOperadorId");
+                    b.HasIndex("DireccionMAC")
+                        .HasDatabaseName("IX_Botones_DireccionMAC");
 
                     b.ToTable("Botones", "planta");
-                });
-
-            modelBuilder.Entity("WebApp.Models.DepartamentoOperador", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Activo")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Descripcion")
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
-
-                    b.Property<DateTime>("FechaCreacion")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("NOW()");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Nombre")
-                        .IsUnique()
-                        .HasDatabaseName("IX_DepartamentosOperador_Nombre");
-
-                    b.ToTable("DepartamentosOperador", "operadores");
                 });
 
             modelBuilder.Entity("WebApp.Models.Estacion", b =>
@@ -1161,16 +1141,13 @@ namespace WebApp.Migrations
                     b.ToTable("Operadores", "operadores");
                 });
 
-            modelBuilder.Entity("WebApp.Models.OperadorDepartamento", b =>
+            modelBuilder.Entity("WebApp.Models.OperadorRolOperador", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("DepartamentoOperadorId")
-                        .HasColumnType("integer");
 
                     b.Property<DateTime>("FechaAsignacion")
                         .ValueGeneratedOnAdd()
@@ -1180,15 +1157,52 @@ namespace WebApp.Migrations
                     b.Property<int>("OperadorId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("RolOperadorId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartamentoOperadorId");
+                    b.HasIndex("RolOperadorId");
 
-                    b.HasIndex("OperadorId", "DepartamentoOperadorId")
+                    b.HasIndex("OperadorId", "RolOperadorId")
                         .IsUnique()
-                        .HasDatabaseName("IX_OperadorDepartamentos_OperadorId_DepartamentoOperadorId");
+                        .HasDatabaseName("IX_OperadorRolesOperador_OperadorId_RolOperadorId");
 
-                    b.ToTable("OperadorDepartamentos", "operadores");
+                    b.ToTable("OperadorRolesOperador", "operadores");
+                });
+
+            modelBuilder.Entity("WebApp.Models.RolOperador", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Activo")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Descripcion")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Nombre")
+                        .IsUnique()
+                        .HasDatabaseName("IX_RolesOperador_Nombre");
+
+                    b.ToTable("RolesOperador", "operadores");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1244,13 +1258,13 @@ namespace WebApp.Migrations
 
             modelBuilder.Entity("WebApp.Models.Boton", b =>
                 {
-                    b.HasOne("WebApp.Models.DepartamentoOperador", "DepartamentoOperador")
+                    b.HasOne("WebApp.Models.Area", "Area")
                         .WithMany()
-                        .HasForeignKey("DepartamentoOperadorId")
+                        .HasForeignKey("AreaId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("DepartamentoOperador");
+                    b.Navigation("Area");
                 });
 
             modelBuilder.Entity("WebApp.Models.Estacion", b =>
@@ -1474,33 +1488,28 @@ namespace WebApp.Migrations
                     b.Navigation("Estacion");
                 });
 
-            modelBuilder.Entity("WebApp.Models.OperadorDepartamento", b =>
+            modelBuilder.Entity("WebApp.Models.OperadorRolOperador", b =>
                 {
-                    b.HasOne("WebApp.Models.DepartamentoOperador", "DepartamentoOperador")
-                        .WithMany("OperadorDepartamentos")
-                        .HasForeignKey("DepartamentoOperadorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("WebApp.Models.Operador", "Operador")
-                        .WithMany("OperadorDepartamentos")
+                        .WithMany("OperadorRoles")
                         .HasForeignKey("OperadorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("DepartamentoOperador");
+                    b.HasOne("WebApp.Models.RolOperador", "RolOperador")
+                        .WithMany("OperadorRoles")
+                        .HasForeignKey("RolOperadorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Operador");
+
+                    b.Navigation("RolOperador");
                 });
 
             modelBuilder.Entity("WebApp.Models.Area", b =>
                 {
                     b.Navigation("Lineas");
-                });
-
-            modelBuilder.Entity("WebApp.Models.DepartamentoOperador", b =>
-                {
-                    b.Navigation("OperadorDepartamentos");
                 });
 
             modelBuilder.Entity("WebApp.Models.Estacion", b =>
@@ -1554,7 +1563,12 @@ namespace WebApp.Migrations
 
             modelBuilder.Entity("WebApp.Models.Operador", b =>
                 {
-                    b.Navigation("OperadorDepartamentos");
+                    b.Navigation("OperadorRoles");
+                });
+
+            modelBuilder.Entity("WebApp.Models.RolOperador", b =>
+                {
+                    b.Navigation("OperadorRoles");
                 });
 #pragma warning restore 612, 618
         }

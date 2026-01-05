@@ -26,7 +26,7 @@
                             <th>ID</th>
                             <th>Número de Empleado</th>
                             <th>Nombre Completo</th>
-                            <th>IDs de Roles</th>
+                            <th>IDs de Departamentos</th>
                             <th>Estado</th>
                         </tr>
                     </thead>
@@ -38,15 +38,15 @@
                                 <td><strong>@item.NumeroEmpleado</strong></td>
                                 <td>@item.NombreCompleto</td>
                                 <td>
-                                    @if (item.OperadorRoles.Any())
+                                    @if (item.OperadorDepartamentos.Any())
                                     {
                                         <span class="text-muted">
-                                            [@string.Join(", ", item.OperadorRoles.Select(or => or.RolOperadorId))]
+                                            [@string.Join(", ", item.OperadorDepartamentos.Select(od => od.DepartamentoOperadorId))]
                                         </span>
                                     }
                                     else
                                     {
-                                        <span class="text-muted fst-italic">Sin roles</span>
+                                        <span class="text-muted fst-italic">Sin departamentos</span>
                                     }
                                 </td>
                                 <td>

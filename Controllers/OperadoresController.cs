@@ -26,8 +26,8 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Index()
         {
             var operadores = await _context.Operadores
-                .Include(o => o.OperadorRoles)
-                    .ThenInclude(or => or.RolOperador)
+                .Include(o => o.OperadorDepartamentos)
+                    .ThenInclude(od => od.DepartamentoOperador)
                 .OrderBy(o => o.NumeroEmpleado)
                 .ToListAsync();
             return View(operadores);
@@ -37,8 +37,8 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Lista()
         {
             var operadores = await _context.Operadores
-                .Include(o => o.OperadorRoles)
-                    .ThenInclude(or => or.RolOperador)
+                .Include(o => o.OperadorDepartamentos)
+                    .ThenInclude(od => od.DepartamentoOperador)
                 .OrderBy(o => o.Id)
                 .ToListAsync();
             return View(operadores);
@@ -62,10 +62,10 @@ namespace WebApp.Controllers
             }
 
             var operador = await _context.Operadores
-                .Include(o => o.OperadorRoles)
-                    .ThenInclude(or => or.RolOperador)
+                .Include(o => o.OperadorDepartamentos)
+                    .ThenInclude(od => od.DepartamentoOperador)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            
+
             if (operador == null)
             {
                 return NotFound();
@@ -74,8 +74,8 @@ namespace WebApp.Controllers
             return View(operador);
         }
 
-        // GET: Operadores/Roles/5
-        public async Task<IActionResult> Roles(int? id)
+        // GET: Operadores/Departamentos/5
+        public async Task<IActionResult> Departamentos(int? id)
         {
             if (id == null)
             {
@@ -83,8 +83,8 @@ namespace WebApp.Controllers
             }
 
             var operador = await _context.Operadores
-                .Include(o => o.OperadorRoles)
-                    .ThenInclude(or => or.RolOperador)
+                .Include(o => o.OperadorDepartamentos)
+                    .ThenInclude(od => od.DepartamentoOperador)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (operador == null)
@@ -98,9 +98,9 @@ namespace WebApp.Controllers
         // GET: Operadores/Create
         public async Task<IActionResult> Create()
         {
-            ViewBag.RolesOperador = await _context.RolesOperador
-                .Where(r => r.Activo)
-                .OrderBy(r => r.Nombre)
+            ViewBag.DepartamentosOperador = await _context.DepartamentosOperador
+                .Where(d => d.Activo)
+                .OrderBy(d => d.Nombre)
                 .ToListAsync();
             return View();
         }
@@ -108,28 +108,28 @@ namespace WebApp.Controllers
         // POST: Operadores/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Nombre,Apellido,NumeroEmpleado")] Operador operador, string CodigoPin, List<int>? RolesSeleccionados)
+        public async Task<IActionResult> Create([Bind("Nombre,Apellido,NumeroEmpleado")] Operador operador, string CodigoPin, List<int>? DepartamentosSeleccionados)
         {
             if (ModelState.IsValid)
             {
                 if (await _context.Operadores.AnyAsync(o => o.NumeroEmpleado == operador.NumeroEmpleado))
                 {
                     ModelState.AddModelError("NumeroEmpleado", "Este número de empleado ya existe.");
-                    ViewBag.RolesOperador = await _context.RolesOperador.Where(r => r.Activo).ToListAsync();
+                    ViewBag.DepartamentosOperador = await _context.DepartamentosOperador.Where(d => d.Activo).ToListAsync();
                     return View(operador);
                 }
 
                 if (string.IsNullOrWhiteSpace(CodigoPin))
                 {
                     ModelState.AddModelError("CodigoPin", "El código PIN es requerido.");
-                    ViewBag.RolesOperador = await _context.RolesOperador.Where(r => r.Activo).ToListAsync();
+                    ViewBag.DepartamentosOperador = await _context.DepartamentosOperador.Where(d => d.Activo).ToListAsync();
                     return View(operador);
                 }
 
                 if (CodigoPin.Length < 4)
                 {
                     ModelState.AddModelError("CodigoPin", "El código PIN debe tener al menos 4 dígitos.");
-                    ViewBag.RolesOperador = await _context.RolesOperador.Where(r => r.Activo).ToListAsync();
+                    ViewBag.DepartamentosOperador = await _context.DepartamentosOperador.Where(d => d.Activo).ToListAsync();
                     return View(operador);
                 }
 
@@ -140,24 +140,24 @@ namespace WebApp.Controllers
                 _context.Add(operador);
                 await _context.SaveChangesAsync();
 
-                if (RolesSeleccionados != null && RolesSeleccionados.Any())
+                if (DepartamentosSeleccionados != null && DepartamentosSeleccionados.Any())
                 {
-                    foreach (var rolId in RolesSeleccionados)
+                    foreach (var deptId in DepartamentosSeleccionados)
                     {
-                        _context.OperadorRolesOperador.Add(new OperadorRolOperador
+                        _context.OperadorDepartamentos.Add(new OperadorDepartamento
                         {
                             OperadorId = operador.Id,
-                            RolOperadorId = rolId,
+                            DepartamentoOperadorId = deptId,
                             FechaAsignacion = DateTime.UtcNow
                         });
                     }
                     await _context.SaveChangesAsync();
                 }
-                
+
                 TempData["Success"] = "Operador creado exitosamente.";
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.RolesOperador = await _context.RolesOperador.Where(r => r.Activo).ToListAsync();
+            ViewBag.DepartamentosOperador = await _context.DepartamentosOperador.Where(d => d.Activo).ToListAsync();
             return View(operador);
         }
 
@@ -170,7 +170,7 @@ namespace WebApp.Controllers
             }
 
             var operador = await _context.Operadores
-                .Include(o => o.OperadorRoles)
+                .Include(o => o.OperadorDepartamentos)
                 .FirstOrDefaultAsync(o => o.Id == id);
 
             if (operador == null)
@@ -178,13 +178,13 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            ViewBag.RolesOperador = await _context.RolesOperador
-                .Where(r => r.Activo)
-                .OrderBy(r => r.Nombre)
+            ViewBag.DepartamentosOperador = await _context.DepartamentosOperador
+                .Where(d => d.Activo)
+                .OrderBy(d => d.Nombre)
                 .ToListAsync();
-            
-            ViewBag.RolesSeleccionados = operador.OperadorRoles
-                .Select(or => or.RolOperadorId)
+
+            ViewBag.DepartamentosSeleccionados = operador.OperadorDepartamentos
+                .Select(od => od.DepartamentoOperadorId)
                 .ToList();
 
             return View(operador);
@@ -193,7 +193,7 @@ namespace WebApp.Controllers
         // POST: Operadores/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Apellido,NumeroEmpleado,Activo")] Operador operador, string? CodigoPin, List<int>? RolesSeleccionados)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Apellido,NumeroEmpleado,Activo")] Operador operador, string? CodigoPin, List<int>? DepartamentosSeleccionados)
         {
             if (id != operador.Id)
             {
@@ -205,7 +205,7 @@ namespace WebApp.Controllers
                 try
                 {
                     var operadorExistente = await _context.Operadores
-                        .Include(o => o.OperadorRoles)
+                        .Include(o => o.OperadorDepartamentos)
                         .FirstOrDefaultAsync(o => o.Id == id);
 
                     if (operadorExistente == null)
@@ -216,8 +216,8 @@ namespace WebApp.Controllers
                     if (await _context.Operadores.AnyAsync(o => o.NumeroEmpleado == operador.NumeroEmpleado && o.Id != id))
                     {
                         ModelState.AddModelError("NumeroEmpleado", "Este número de empleado ya existe.");
-                        ViewBag.RolesOperador = await _context.RolesOperador.Where(r => r.Activo).ToListAsync();
-                        ViewBag.RolesSeleccionados = RolesSeleccionados ?? new List<int>();
+                        ViewBag.DepartamentosOperador = await _context.DepartamentosOperador.Where(d => d.Activo).ToListAsync();
+                        ViewBag.DepartamentosSeleccionados = DepartamentosSeleccionados ?? new List<int>();
                         return View(operador);
                     }
 
@@ -231,23 +231,23 @@ namespace WebApp.Controllers
                         if (CodigoPin.Length < 4)
                         {
                             ModelState.AddModelError("CodigoPin", "El código PIN debe tener al menos 4 dígitos.");
-                            ViewBag.RolesOperador = await _context.RolesOperador.Where(r => r.Activo).ToListAsync();
-                            ViewBag.RolesSeleccionados = RolesSeleccionados ?? new List<int>();
+                            ViewBag.DepartamentosOperador = await _context.DepartamentosOperador.Where(d => d.Activo).ToListAsync();
+                            ViewBag.DepartamentosSeleccionados = DepartamentosSeleccionados ?? new List<int>();
                             return View(operador);
                         }
                         operadorExistente.CodigoPinHashed = _operadorService.HashPin(CodigoPin);
                     }
 
-                    _context.OperadorRolesOperador.RemoveRange(operadorExistente.OperadorRoles);
+                    _context.OperadorDepartamentos.RemoveRange(operadorExistente.OperadorDepartamentos);
 
-                    if (RolesSeleccionados != null && RolesSeleccionados.Any())
+                    if (DepartamentosSeleccionados != null && DepartamentosSeleccionados.Any())
                     {
-                        foreach (var rolId in RolesSeleccionados)
+                        foreach (var deptId in DepartamentosSeleccionados)
                         {
-                            _context.OperadorRolesOperador.Add(new OperadorRolOperador
+                            _context.OperadorDepartamentos.Add(new OperadorDepartamento
                             {
                                 OperadorId = operadorExistente.Id,
-                                RolOperadorId = rolId,
+                                DepartamentoOperadorId = deptId,
                                 FechaAsignacion = DateTime.UtcNow
                             });
                         }
@@ -269,9 +269,9 @@ namespace WebApp.Controllers
                     }
                 }
             }
-            
-            ViewBag.RolesOperador = await _context.RolesOperador.Where(r => r.Activo).ToListAsync();
-            ViewBag.RolesSeleccionados = RolesSeleccionados ?? new List<int>();
+
+            ViewBag.DepartamentosOperador = await _context.DepartamentosOperador.Where(d => d.Activo).ToListAsync();
+            ViewBag.DepartamentosSeleccionados = DepartamentosSeleccionados ?? new List<int>();
             return View(operador);
         }
 

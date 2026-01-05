@@ -36,7 +36,7 @@ namespace WebApp.Models
         [NotMapped]
         public string NombreCompleto => $"{Nombre} {Apellido}";
 
-        // Relación muchos a muchos con RolesOperador
-        public ICollection<OperadorRolOperador> OperadorRoles { get; set; } = new List<OperadorRolOperador>();
+        // Relación muchos a muchos con DepartamentosOperador
+        public ICollection<OperadorDepartamento> OperadorDepartamentos { get; set; } = new List<OperadorDepartamento>();
     }
 }
