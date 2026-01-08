@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(del \"d:\\\\pers\\\\webapp_claude\\\\Views\\\\Linealytics\\\\CausasParo.cshtml\" \"d:\\\\pers\\\\webapp_claude\\\\Views\\\\Linealytics\\\\CreateCausaParo.cshtml\" \"d:\\\\pers\\\\webapp_claude\\\\Views\\\\Linealytics\\\\EditCausaParo.cshtml\" \"d:\\\\pers\\\\webapp_claude\\\\Views\\\\Linealytics\\\\CreateCategoriaParo.cshtml\" \"d:\\\\pers\\\\webapp_claude\\\\Views\\\\Linealytics\\\\EditCategoriaParo.cshtml\" \"d:\\\\pers\\\\webapp_claude\\\\Views\\\\Linealytics\\\\CategoriasParo.cshtml\")"
+    ]
+  }
+}

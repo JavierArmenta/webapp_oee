@@ -229,225 +229,6 @@ namespace WebApp.Controllers
             return RedirectToAction(nameof(Productos));
         }
 
-        // ========== CATEGORÍAS DE PARO ==========
-
-        public async Task<IActionResult> CategoriasParo()
-        {
-            var categorias = await _context.CategoriasParo
-                .Include(c => c.CausasParo)
-                .OrderBy(c => c.Nombre)
-                .ToListAsync();
-            return View(categorias);
-        }
-
-        public IActionResult CreateCategoriaParo()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateCategoriaParo([Bind("Nombre,Descripcion,Color,EsPlaneado")] CategoriaParo categoria)
-        {
-            if (ModelState.IsValid)
-            {
-                categoria.Activo = true;
-                _context.Add(categoria);
-                await _context.SaveChangesAsync();
-                TempData["Success"] = "Categoría de paro creada exitosamente.";
-                return RedirectToAction(nameof(CategoriasParo));
-            }
-            return View(categoria);
-        }
-
-        public async Task<IActionResult> EditCategoriaParo(int? id)
-        {
-            if (id == null) return NotFound();
-
-            var categoria = await _context.CategoriasParo.FindAsync(id);
-            if (categoria == null) return NotFound();
-
-            return View(categoria);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditCategoriaParo(int id, [Bind("Id,Nombre,Descripcion,Color,EsPlaneado,Activo")] CategoriaParo categoria)
-        {
-            if (id != categoria.Id) return NotFound();
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(categoria);
-                    await _context.SaveChangesAsync();
-                    TempData["Success"] = "Categoría de paro actualizada exitosamente.";
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CategoriaParoExists(categoria.Id))
-                        return NotFound();
-                    else
-                        throw;
-                }
-                return RedirectToAction(nameof(CategoriasParo));
-            }
-            return View(categoria);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeactivateCategoriaParo(int id)
-        {
-            var categoria = await _context.CategoriasParo.FindAsync(id);
-            if (categoria != null)
-            {
-                categoria.Activo = false;
-                await _context.SaveChangesAsync();
-                TempData["Success"] = "Categoría de paro desactivada exitosamente.";
-            }
-            else
-            {
-                TempData["Error"] = "No se pudo encontrar la categoría de paro.";
-            }
-            return RedirectToAction(nameof(CategoriasParo));
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ActivateCategoriaParo(int id)
-        {
-            var categoria = await _context.CategoriasParo.FindAsync(id);
-            if (categoria != null)
-            {
-                categoria.Activo = true;
-                await _context.SaveChangesAsync();
-                TempData["Success"] = "Categoría de paro activada exitosamente.";
-            }
-            else
-            {
-                TempData["Error"] = "No se pudo encontrar la categoría de paro.";
-            }
-            return RedirectToAction(nameof(CategoriasParo));
-        }
-
-        // ========== CAUSAS DE PARO ==========
-
-        public async Task<IActionResult> CausasParo()
-        {
-            var causas = await _context.CausasParo
-                .Include(c => c.CategoriaParo)
-                .OrderBy(c => c.CategoriaParo.Nombre)
-                .ThenBy(c => c.Nombre)
-                .ToListAsync();
-            return View(causas);
-        }
-
-        public async Task<IActionResult> CreateCausaParo()
-        {
-            ViewBag.Categorias = new SelectList(
-                await _context.CategoriasParo.Where(c => c.Activo).ToListAsync(),
-                "Id", "Nombre");
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateCausaParo([Bind("CategoriaParoId,Nombre,Descripcion,CodigoInterno,RequiereMantenimiento")] CausaParo causa)
-        {
-            if (ModelState.IsValid)
-            {
-                causa.Activo = true;
-                _context.Add(causa);
-                await _context.SaveChangesAsync();
-                TempData["Success"] = "Causa de paro creada exitosamente.";
-                return RedirectToAction(nameof(CausasParo));
-            }
-            ViewBag.Categorias = new SelectList(
-                await _context.CategoriasParo.Where(c => c.Activo).ToListAsync(),
-                "Id", "Nombre", causa.CategoriaParoId);
-            return View(causa);
-        }
-
-        public async Task<IActionResult> EditCausaParo(int? id)
-        {
-            if (id == null) return NotFound();
-
-            var causa = await _context.CausasParo.FindAsync(id);
-            if (causa == null) return NotFound();
-
-            ViewBag.Categorias = new SelectList(
-                await _context.CategoriasParo.Where(c => c.Activo).ToListAsync(),
-                "Id", "Nombre", causa.CategoriaParoId);
-            return View(causa);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditCausaParo(int id, [Bind("Id,CategoriaParoId,Nombre,Descripcion,CodigoInterno,RequiereMantenimiento,Activo")] CausaParo causa)
-        {
-            if (id != causa.Id) return NotFound();
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(causa);
-                    await _context.SaveChangesAsync();
-                    TempData["Success"] = "Causa de paro actualizada exitosamente.";
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CausaParoExists(causa.Id))
-                        return NotFound();
-                    else
-                        throw;
-                }
-                return RedirectToAction(nameof(CausasParo));
-            }
-            ViewBag.Categorias = new SelectList(
-                await _context.CategoriasParo.Where(c => c.Activo).ToListAsync(),
-                "Id", "Nombre", causa.CategoriaParoId);
-            return View(causa);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeactivateCausaParo(int id)
-        {
-            var causa = await _context.CausasParo.FindAsync(id);
-            if (causa != null)
-            {
-                causa.Activo = false;
-                await _context.SaveChangesAsync();
-                TempData["Success"] = "Causa de paro desactivada exitosamente.";
-            }
-            else
-            {
-                TempData["Error"] = "No se pudo encontrar la causa de paro.";
-            }
-            return RedirectToAction(nameof(CausasParo));
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ActivateCausaParo(int id)
-        {
-            var causa = await _context.CausasParo.FindAsync(id);
-            if (causa != null)
-            {
-                causa.Activo = true;
-                await _context.SaveChangesAsync();
-                TempData["Success"] = "Causa de paro activada exitosamente.";
-            }
-            else
-            {
-                TempData["Error"] = "No se pudo encontrar la causa de paro.";
-            }
-            return RedirectToAction(nameof(CausasParo));
-        }
-
         // ========== BOTONES ==========
 
         public async Task<IActionResult> Botones()
@@ -469,16 +250,18 @@ namespace WebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateBoton([Bind("Nombre,Codigo,DepartamentoOperadorId,Descripcion")] Boton boton)
+        public async Task<IActionResult> CreateBoton([Bind("Codigo,Nombre,DepartamentoOperadorId,Descripcion")] Boton boton)
         {
             if (ModelState.IsValid)
             {
                 boton.Activo = true;
+                boton.FechaCreacion = DateTime.UtcNow;
                 _context.Add(boton);
                 await _context.SaveChangesAsync();
                 TempData["Success"] = "Botón creado exitosamente.";
                 return RedirectToAction(nameof(Botones));
             }
+
             ViewBag.Departamentos = new SelectList(
                 await _context.DepartamentosOperador.Where(d => d.Activo).OrderBy(d => d.Nombre).ToListAsync(),
                 "Id", "Nombre", boton.DepartamentoOperadorId);
@@ -576,16 +359,6 @@ namespace WebApp.Controllers
         private bool ProductoExists(int id)
         {
             return _context.Productos.Any(e => e.Id == id);
-        }
-
-        private bool CategoriaParoExists(int id)
-        {
-            return _context.CategoriasParo.Any(e => e.Id == id);
-        }
-
-        private bool CausaParoExists(int id)
-        {
-            return _context.CausasParo.Any(e => e.Id == id);
         }
 
         private bool BotonExists(int id)
